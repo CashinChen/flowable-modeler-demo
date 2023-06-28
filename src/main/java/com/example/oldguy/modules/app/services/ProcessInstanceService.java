@@ -1,5 +1,6 @@
 package com.example.oldguy.modules.app.services;
 
+import com.example.oldguy.common.dto.ProcessStarter;
 import com.example.oldguy.modules.app.dto.rsp.ProcessInstanceRsp;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @ClassName: ProcessInstanceService
@@ -41,14 +44,17 @@ public class ProcessInstanceService {
     }
 
     /**
-     *  开启流程实例
-     * @param processDefinitionKey
+     *  创建流程实例
+     * @param processStarter
      * @return
      */
-    public ProcessInstance startProcessInstance(String processDefinitionKey){
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey);
-        return processInstance;
+    public ProcessInstanceRsp createProcessInstance(ProcessStarter processStarter) {
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processStarter.getProcessInstanceByKey(), processStarter.getVariables());
+        ProcessInstanceRsp rsp = new ProcessInstanceRsp();
+        rsp.setProcessInstanceId(processInstance.getId());
+        rsp.setProcessDefinitionId(processInstance.getProcessDefinitionId());
+        rsp.setProcessDefinitionName(processInstance.getProcessDefinitionName());
+        return rsp;
     }
-
 
 }

@@ -1,14 +1,13 @@
 package com.example.oldguy.modules.app.controllers;
 
 import com.example.oldguy.common.dto.CommonRsp;
+import com.example.oldguy.common.dto.ProcessStarter;
 import com.example.oldguy.modules.app.dto.rsp.ProcessInstanceRsp;
 import com.example.oldguy.modules.app.services.ProcessInstanceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,4 +31,10 @@ public class ProcessInstanceController {
     public CommonRsp<List<ProcessInstanceRsp>> getRuntimeProcessInstanceList(){
         return new CommonRsp<>(processInstanceService.getRuntimeProcessInstanceList());
     }
+    @ApiOperation("创建流程实例")
+    @PostMapping("runtime/create")
+    public CommonRsp<ProcessInstanceRsp> createProcessInstance(@RequestBody ProcessStarter processStarter){
+        return new CommonRsp<>(processInstanceService.createProcessInstance(processStarter));
+    }
+
 }
